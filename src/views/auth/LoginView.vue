@@ -1,14 +1,22 @@
 <script>
+const container = document.getElementById("container");
 export default {
   data() {
     return {
+      rightPanelActive: false,
       count: 0,
       username: "",
       password: "",
     };
   },
   methods: {
-    login(e) {
+    clickSignupButton() {
+      this.rightPanelActive = true;
+    },
+    clickSigninButton() {
+      this.rightPanelActive = false;
+    },
+    signin(e) {
       console.log("username", this.username);
       console.log("password", this.password);
     },
@@ -17,44 +25,60 @@ export default {
 </script>
 
 <template>
-  <div class="parent clearfix">
-    <div class="bg-illustration">
-      <div class="burger-btn">
-        <span></span>
-        <span></span>
-        <span></span>
+  <div id="body">
+    <div
+      class="container"
+      :class="{ 'right-panel-active': rightPanelActive }"
+      id="container"
+    >
+      <div class="form-container sign-up-container">
+        <form action="#">
+          <h1>Create Account</h1>
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          <span>or use your email for registration</span>
+          <input type="text" placeholder="Name" />
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Password" />
+          <button>Sign Up</button>
+        </form>
       </div>
-    </div>
-
-    <div class="login">
-      <div class="container">
-        <h1>Login to access to<br />your account</h1>
-
-        <div class="login-form">
-          <form action="" @submit.prevent="login">
-            <input
-              v-model="username"
-              id="username"
-              type="username"
-              placeholder="Username"
-            />
-            <input
-              v-model="password"
-              id="password"
-              type="password"
-              placeholder="Password"
-            />
-
-            <div class="remember-form">
-              <input type="checkbox" />
-              <span>Remember me</span>
-            </div>
-            <div class="forget-pass">
-              <a href="#">Forgot Password ?</a>
-            </div>
-
-            <button type="submit">LOG-IN</button>
-          </form>
+      <div class="form-container sign-in-container">
+        <form action="#" @submit.prevent="signin">
+          <h1>Sign in</h1>
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          <span>or use your account</span>
+          <input type="username" placeholder="Username" v-model="username" />
+          <input type="password" placeholder="Password" v-model="password" />
+          <a href="#">Forgot your password?</a>
+          <button>Sign In</button>
+        </form>
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>Welcome Back!</h1>
+            <p>
+              To keep connected with us please login with your personal info
+            </p>
+            <button class="ghost" id="signIn" @click="clickSigninButton()">
+              Sign In
+            </button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1>Hello, Friend!</h1>
+            <p>Enter your personal details and start journey with us</p>
+            <button class="ghost" id="signUp" @click="clickSignupButton()">
+              Sign Up
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -62,378 +86,263 @@ export default {
 </template>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
 * {
-  margin: 0;
-  padding: 0;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
 }
 
 body {
-  background-color: #fff;
-  font-family: Montserrat;
-  overflow-x: hidden;
+  background: #f6f5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+  height: 100vh;
+  margin: -20px 0 50px;
 }
 
-article,
-aside,
-details,
-figure,
-footer,
-header,
-main,
-menu,
-nav,
-section,
-summary {
-  display: block;
+#body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
+h1 {
+  font-weight: bold;
+  margin: 0;
+}
+
+h2 {
+  text-align: center;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin: 20px 0 30px;
+}
+
+span {
+  font-size: 12px;
+}
+
 a {
-  -ms-word-wrap: break-word;
-  word-wrap: break-word;
+  color: #333;
+  font-size: 14px;
   text-decoration: none;
+  margin: 15px 0;
 }
 
-img {
-  border: none;
+button {
+  border-radius: 20px;
+  border: 1px solid #ff4b2b;
+  background-color: #ff4b2b;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
 }
 
-*:focus {
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
   outline: none;
 }
 
-.clearfix::after {
-  content: "";
-  display: table;
-  clear: both;
+button.ghost {
+  background-color: transparent;
+  border-color: #ffffff;
 }
 
-.bg-illustration {
-  position: relative;
-  height: 100vh;
-  width: 1194px;
-  background: url("https://scontent.fhph1-2.fna.fbcdn.net/v/t39.30808-6/327182785_579228350725517_6210522027000822129_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=thHV6X2CK8cAX9gNilH&_nc_ht=scontent.fhph1-2.fna&oh=00_AfBEc1qtQhRYVkQpMyy84i6cjgoCkDU-PGk-Q5pOpwbc-A&oe=641057EE")
-    no-repeat center center scroll;
-  background-size: cover;
-  float: left;
-  -webkit-animation: bgslide 2.3s forwards;
-  animation: bgslide 2.3s forwards;
-}
-.bg-illustration img {
-  width: 248px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  height: auto;
-  margin: 19px 0 0 25px;
+form {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
 }
 
-@-webkit-keyframes bgslide {
-  from {
-    left: -100%;
-    width: 0;
-    opacity: 0;
-  }
-  to {
-    left: 0;
-    width: 1194px;
-    opacity: 1;
-  }
-}
-
-@keyframes bgslide {
-  from {
-    left: -100%;
-    width: 0;
-    opacity: 0;
-  }
-  to {
-    left: 0;
-    width: 1194px;
-    opacity: 1;
-  }
-}
-
-.login {
-  max-height: 100vh;
-  overflow-y: auto;
-  float: left;
-  margin: 0 auto;
-  width: calc(100% - 1194px);
-}
-.login .container {
-  width: 505px;
-  margin: 0 auto;
-  position: relative;
-}
-.login .container h1 {
-  margin-top: 100px;
-  font-size: 35px;
-  font-weight: bolder;
-}
-.login .container .login-form {
-  margin-top: 112px;
-}
-.login .container .login-form form {
-  display: -ms-grid;
-  display: grid;
-}
-.login .container .login-form form input {
-  font-size: 16px;
-  font-weight: normal;
-  background: rgba(57, 57, 57, 0.07);
-  margin: 12.5px 0;
-  height: 68px;
+input {
+  background-color: #eee;
   border: none;
-  padding: 0 30px;
-  border-radius: 10px;
-}
-.login .container .login-form form button[type="submit"] {
-  background: -webkit-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-  background: -o-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-  background: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
-  border: none;
-  margin-top: 124px;
-  margin-bottom: 20px;
-  width: 241px;
-  height: 58px;
-  text-transform: uppercase;
-  color: white;
-  border-radius: 10px;
-  position: relative;
-  z-index: 2;
-  font-weight: bold;
-  font-size: 20px;
-}
-.login .container .login-form form button[type="submit"]:hover::after {
-  opacity: 1;
-}
-.login .container .login-form form button[type="submit"]::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  border-radius: 10px;
-  opacity: 0;
-  top: 0;
-  left: 0;
-  -webkit-transition: 0.3s ease-in-out;
-  -o-transition: 0.3s ease-in-out;
-  transition: 0.3s ease-in-out;
-  right: 0;
-  bottom: 0;
-  background: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    from(#09203f),
-    to(#537895)
-  );
-  background: -webkit-linear-gradient(bottom, #09203f 0%, #537895 100%);
-  background: -o-linear-gradient(bottom, #09203f 0%, #537895 100%);
-  background: linear-gradient(to top, #09203f 0%, #537895 100%);
-}
-.login .container .remember-form {
-  position: relative;
-  margin-top: -30px;
-}
-.login .container .remember-form input[type="checkbox"] {
-  margin-top: 9px;
-}
-.login .container .remember-form span {
-  font-size: 18px;
-  font-weight: normal;
-  position: absolute;
-  top: 32px;
-  color: #3b3b3b;
-  margin-left: 15px;
-}
-.login .container .forget-pass {
-  position: absolute;
-  right: 0;
-  margin-top: 189px;
-}
-.login .container .forget-pass a {
-  font-size: 16px;
-  position: relative;
-  font-weight: normal;
-  color: #918f8f;
-}
-.login .container .forget-pass a::after {
-  content: "";
-  position: absolute;
-  height: 2px;
+  padding: 12px 15px;
+  margin: 8px 0;
   width: 100%;
-  border-radius: 100px;
-  background: -webkit-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-  background: -o-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-  background: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
-  bottom: -4px;
+}
+
+.container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
+}
+
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
   left: 0;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  width: 50%;
+  z-index: 2;
+}
+
+.container.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+}
+
+.sign-up-container {
+  left: 0;
+  width: 50%;
   opacity: 0;
-  right: 0;
+  z-index: 1;
 }
-.login .container .forget-pass a:hover::after {
+
+.container.right-panel-active .sign-up-container {
+  transform: translateX(100%);
   opacity: 1;
+  z-index: 5;
+  animation: show 0.6s;
 }
 
-@media only screen and (min-width: 1024px) and (max-width: 1680px) {
-  .bg-illustration {
-    width: 50%;
-    -webkit-animation: none;
-    animation: none;
-  }
-
-  .login {
-    width: 50%;
-  }
-}
-/* Display 12", iPad PRO Portrait, iPad landscape */
-@media only screen and (max-width: 1024px) {
-  body {
-    overflow-x: hidden;
-  }
-
-  @-webkit-keyframes slideIn {
-    from {
-      left: -100%;
-      opacity: 0;
-    }
-    to {
-      left: 0;
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideIn {
-    from {
-      left: -100%;
-      opacity: 0;
-    }
-    to {
-      left: 0;
-      opacity: 1;
-    }
-  }
-  .bg-illustration {
-    float: none;
-    background: url("https://i.ibb.co/rwncw7s/bg-mobile.png") center center;
-    background-size: cover;
-    -webkit-animation: slideIn 0.8s ease-in-out forwards;
-    animation: slideIn 0.8s ease-in-out forwards;
-    width: 100%;
-    height: 190px;
-    text-align: center;
-  }
-  .bg-illustration img {
-    width: 100px;
-    height: auto;
-    margin: 20px auto !important;
-    text-align: center;
-  }
-  .bg-illustration .burger-btn {
-    left: 33px;
-    top: 29px;
-    display: block;
-    position: absolute;
-  }
-  .bg-illustration .burger-btn span {
-    display: block;
-    height: 4px;
-    margin: 6px;
-    background-color: #fff;
-  }
-  .bg-illustration .burger-btn span:nth-child(1) {
-    width: 37px;
-  }
-  .bg-illustration .burger-btn span:nth-child(2) {
-    width: 28px;
-  }
-  .bg-illustration .burger-btn span:nth-child(3) {
-    width: 20px;
-  }
-
-  .login {
-    float: none;
-    margin: 0 auto;
-    width: 100%;
-  }
-  .login .container {
-    -webkit-animation: slideIn 0.8s ease-in-out forwards;
-    animation: slideIn 0.8s ease-in-out forwards;
-    width: 85%;
-    float: none;
-  }
-  .login .container h1 {
-    font-size: 25px;
-    margin-top: 40px;
-  }
-  .login .container .login-form {
-    margin-top: 90px;
-  }
-  .login .container .login-form form input {
-    height: 45px;
-  }
-  .login .container .login-form form button[type="submit"] {
-    height: 45px;
-    margin-top: 100px;
-  }
-  .login .container .login-form .remember-form {
-    position: relative;
-    margin-top: -14px;
-  }
-  .login .container .login-form .remember-form span {
-    font-size: 16px;
-    margin-top: 22px;
-    top: inherit;
-  }
-
-  .forget-pass {
-    position: absolute;
-    right: inherit;
-    left: 0;
-    bottom: -40px;
-    margin: 0 !important;
-  }
-  .forget-pass a {
-    font-size: 16px;
-    position: relative;
-    font-weight: normal;
-    color: #918f8f;
-  }
-  .forget-pass a::after {
-    content: "";
-    position: absolute;
-    height: 2px;
-    width: 100%;
-    border-radius: 100px;
-    background: -webkit-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-    background: -o-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-    background: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
-    bottom: -4px;
-    left: 0;
-    -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
+@keyframes show {
+  0%,
+  49.99% {
     opacity: 0;
-    right: 0;
+    z-index: 1;
   }
-  .forget-pass a:hover::after {
+
+  50%,
+  100% {
     opacity: 1;
+    z-index: 5;
   }
+}
+
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: #ff416c;
+  background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #ffffff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+.social-container {
+  margin: 20px 0;
+}
+
+.social-container a {
+  border: 1px solid #dddddd;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  height: 40px;
+  width: 40px;
+}
+
+footer {
+  background-color: #222;
+  color: #fff;
+  font-size: 14px;
+  bottom: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 999;
+}
+
+footer p {
+  margin: 10px 0;
+}
+
+footer i {
+  color: red;
+}
+
+footer a {
+  color: #3c97bf;
+  text-decoration: none;
 }
 </style>
