@@ -15,8 +15,11 @@
     "@fullcalendar/interaction": "^6.1.4",
     "@fullcalendar/timegrid": "^6.1.4",
     "@fullcalendar/vue3": "^6.1.4",
+    "sass": "^1.60.0",
+    "sass-loader": "^13.2.2",
     "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue3-easy-data-table": "^1.5.42"
   },
   "devDependencies": {
     "@types/node": "^18.14.2",

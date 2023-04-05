@@ -1,11 +1,15 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
 
-import './assets/main.css'
+import Vue3EasyDataTable from "vue3-easy-data-table";
+import "vue3-easy-data-table/dist/style.css";
 
-const app = createApp(App)
+// DataTable.use(Select);
 
-app.use(router)
+const app = createApp(App);
+app.component("EasyDataTable", Vue3EasyDataTable);
 
-app.mount('#app')
+app.use(router);
+
+app.mount("#app");

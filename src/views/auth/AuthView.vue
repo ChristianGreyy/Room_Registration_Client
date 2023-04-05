@@ -1,4 +1,7 @@
 <script>
+import storageService from "../../services/storage.service.ts";
+const url = import.meta.env.VITE_APP_URL;
+
 const container = document.getElementById("container");
 export default {
   data() {
@@ -16,9 +19,25 @@ export default {
     clickSigninButton() {
       this.rightPanelActive = false;
     },
-    signin(e) {
-      console.log("username", this.username);
-      console.log("password", this.password);
+    async login(e) {
+      const response = await fetch(`${url}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+        }),
+      });
+      if (response.status == 200) {
+        const result = await response.json();
+        storageService.set("accessToken", result.accessToken);
+        console.log(result);
+        this.$router.push("home");
+      } else {
+        alert("error");
+      }
     },
   },
 };
@@ -47,7 +66,7 @@ export default {
         </form>
       </div>
       <div class="form-container sign-in-container">
-        <form action="#" @submit.prevent="signin">
+        <form action="#" @submit.prevent="login">
           <h1>Sign in</h1>
           <div class="social-container">
             <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
